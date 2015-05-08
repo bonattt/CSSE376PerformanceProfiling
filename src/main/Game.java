@@ -13,6 +13,7 @@ public class Game {
 	 * 
 	 */
 	public static void main(String[] args) {
+		
 		JFrame frame = new JFrame("Digger");
 		
 		GamePanel gamePanel = new GamePanel();

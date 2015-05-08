@@ -71,7 +71,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		initialize();
-
+		//TODO
+		
 		// Main game loop.
 		while (true) {
 			if (!this.isRunning) {
@@ -79,9 +80,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 
 			// Run the basics.
+			long startTime = System.nanoTime();
 			update();
 			render();
 			draw();
+			long endTime = System.nanoTime();
+			long fps = 1000000000L/(endTime-startTime);
+			System.err.println("fps: "+fps);
 
 			try {
 				Thread.sleep(this.targetTime);

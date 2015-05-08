@@ -53,6 +53,7 @@ public class Level {
 	private int mapWidth; // The map array width.
 	private int mapHeight; // The map array height.
 	private int[][] map; // The map array. (height, width)
+	private int[][] lastMap;
 	private int tileSize; // The tileSize. Preferably 32.
 	private ArrayList<Rectangle2D.Double> barrierCollisionBoxes; // The
 																	// arraylist
@@ -84,10 +85,18 @@ public class Level {
 		this.goldObjects = new ArrayList<Gold>();
 
 		this.images = new HashMap<Integer, BufferedImage>();
-
+		
 		populateImages();
 		populateMap(fileName, tileSize);
 
+	}
+	
+	private void setLastMap(){
+		for (int i = 0; i < lastMap.length; i++){
+			for (int j = 0; j < lastMap[i].length; j++){
+				lastMap[i][j] = Integer.MIN_VALUE;
+			}
+		}
 	}
 
 	/**
@@ -212,6 +221,8 @@ public class Level {
 			this.mapHeight = Integer.parseInt(imageReader.readLine());
 
 			this.map = new int[this.mapHeight][this.mapWidth];
+			this.lastMap = new int[this.mapHeight][this.mapWidth];
+			setLastMap();
 
 			for (int r = 0; r < this.map.length; r++) {
 				// Get line of numbers and spaces.
@@ -333,8 +344,11 @@ public class Level {
 		Graphics2D g = img.createGraphics();
 		for (int r = 0; r < this.map.length; r++) {
 			for (int c = 0; c < this.map[r].length; c++) {
-				currentPosition = this.map[r][c];
-				drawTileImage(currentPosition, r, c, g);
+				if (lastMap[r][c] != map[r][c]){
+					currentPosition = this.map[r][c];
+					drawTileImage(currentPosition, r, c, g);
+				}
+				lastMap[r][c] = map[r][c];
 			}
 		}
 		g.dispose();
